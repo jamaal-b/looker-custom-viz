@@ -84,6 +84,10 @@ looker.plugins.visualizations.add({
         section: menuSection,
         type: "boolean", label: "Use Conditional Formatting (>= 100%)", default: false
       };
+      dynamicOptions[`targetThreshold_${fieldName}`] = {
+        section: menuSection,
+        type: "number", label: "Success Threshold (%)", default: 100
+      };
       dynamicOptions[`successColor_${fieldName}`] = {
         section: menuSection,
         type: "string", label: "Target Met Color (e.g. Green)", display: "color", default: "#34A853"
@@ -115,6 +119,7 @@ looker.plugins.visualizations.add({
       const useConditional = config[`useConditional_${fieldName}`];
       const successColor = config[`successColor_${fieldName}`] || "#34A853";
       const dangerColor = config[`dangerColor_${fieldName}`] || "#EA4335";
+      const targetThreshold = config[`targetThreshold_${fieldName}`] !== undefined ? config[`targetThreshold_${fieldName}`] : 100;
       const defaultBarColor = config[`defaultBarColor_${fieldName}`] || "#9AA0A6";
 
       const actualValue = row[actualField.name].value;
@@ -135,7 +140,7 @@ looker.plugins.visualizations.add({
         // FIGURE OUT THE BAR COLOR
         let activeBarColor = defaultBarColor;
         if (useConditional) {
-          activeBarColor = (percentRaw >= 100) ? successColor : dangerColor;
+          activeBarColor = (percentRaw >= targetThreshold) ? successColor : dangerColor;
         }
 
         html += `
