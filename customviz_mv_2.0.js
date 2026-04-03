@@ -1,5 +1,5 @@
 looker.plugins.visualizations.add({
-  id: "looker_mv_2.0",
+  id: "customviz_mv_2.0",
   label: "Multiple Values 2.0",
 
   options: {},
